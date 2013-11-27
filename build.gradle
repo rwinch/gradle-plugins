@@ -29,6 +29,14 @@ subprojects {
     }
 }
 
+project(':maven-bom-plugin') {
+	version = mavenBomPluginVersion
+	dependencies {
+		testCompile 'org.spockframework:spock-core:0.6-groovy-1.8'
+		testCompile 'xmlunit:xmlunit:1.5'
+	}
+}
+
 project(':bundlor-plugin') {
     version = bundlorPluginVersion
     // dependencies are configured within BundlorPlugin

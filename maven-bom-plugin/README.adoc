@@ -1,0 +1,99 @@
+Example use on root project:
+
+[source,groovy]
+----
+apply plugin: "maven-bom"
+
+mavenBom {
+	customizePom = { xml ->
+		xml.url("https://github.com/spring-projects/spring-framework")
+		xml.organization() {
+			name("SpringSource")
+			url("http://spring.io/spring-framework")
+		}
+		xml.licenses() {
+			license() {
+				name("The Apache Software License, Version 2.0")
+				url("http://www.apache.org/licenses/LICENSE-2.0.txt")
+				distribution("repo")
+			}
+		}
+		xml.scm() {
+			url("https://github.com/spring-projects/spring-framework")
+			connection("scm:git:git://github.com/spring-projects/spring-framework")
+			developerConnection("scm:git:git://github.com/spring-projects/spring-framework")
+		}
+		xml.developers() {
+			developer() {
+				id("jhoeller")
+				name("Juergen Hoeller")
+				email("jhoeller@vmware.com")
+			}
+		}
+		xml.issueManagement() {
+			system("Jira")
+			url("https://jira.springsource.org/browse/SPR")
+		}
+	}
+}
+----
+
+Output is similar to:
+
+
+[source,xml]
+----
+<project xmlns='http://maven.apache.org/POM/4.0.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd'>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.springframework</groupId>
+  <artifactId>spring-bom</artifactId>
+  <version>1.0.0.BUILD-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <url>https://github.com/spring-projects/spring-framework</url>
+  <organization>
+	<url>http://spring.io/spring-framework</url>
+  </organization>
+  <licenses>
+	<license>
+	  <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+	  <distribution>repo</distribution>
+	</license>
+  </licenses>
+  <scm>
+	<url>https://github.com/spring-projects/spring-framework</url>
+	<connection>scm:git:git://github.com/spring-projects/spring-framework</connection>
+	<developerConnection>scm:git:git://github.com/spring-projects/spring-framework</developerConnection>
+  </scm>
+  <developers>
+	<developer>
+	  <id>jhoeller</id>
+	  <email>jhoeller@vmware.com</email>
+	</developer>
+  </developers>
+  <issueManagement>
+	<system>Jira</system>
+	<url>https://jira.springsource.org/browse/SPR</url>
+  </issueManagement>
+  <dependencyManagement>
+	<dependency>
+	  <groupId>org.springframework</groupId>
+	  <artifactId>subProject1</artifactId>
+	  <version>1.0.0.BUILD-SNAPSHOT</version>
+	</dependency>
+	<dependency>
+	  <groupId>org.springframework</groupId>
+	  <artifactId>subProject2</artifactId>
+	  <version>1.0.0.BUILD-SNAPSHOT</version>
+	</dependency>
+  </dependencyManagement>
+</project>
+----
+
+Additionally one can customize which projects are used in the dependency management:
+
+[source,groovy]
+----
+mavenBom {
+  projects = project(':subProject2')
+}
+----
